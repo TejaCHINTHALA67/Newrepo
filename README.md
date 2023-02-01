@@ -1,2 +1,4 @@
-# Newrepo
-so this is the new repo for the new traning
+first_name = "Nora"
+favorite_language = "Python"
+
+print(f"Hi, I'm {first_name}. I'm learning {favorite_language}.")
