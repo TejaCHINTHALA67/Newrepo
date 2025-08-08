@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="StartupLink - Where entrepreneurs meet micro-investors">
+    <title>StartupLink - Mobile Startup Investment Platform</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Top Navigation Bar -->
+    <nav class="top-nav">
+        <div class="nav-container">
+            <div class="logo">
+                <i class="fas fa-rocket"></i>
+                <span>StartupLink</span>
+            </div>
+            <div class="nav-actions">
+                <button class="icon-btn notifications-btn">
+                    <i class="fas fa-bell"></i>
+                    <span class="notification-badge">3</span>
+                </button>
+                <button class="icon-btn profile-btn">
+                    <i class="fas fa-user-circle"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Container -->
+    <main class="main-container">
+        <!-- Startup Feed -->
+        <div class="feed-container active" id="feedView">
+            <div class="stories-container">
+                <!-- Sector Stories -->
+                <div class="story-item add-story">
+                    <div class="story-icon">
+                        <i class="fas fa-plus"></i>
+                    </div>
+                    <span>Add Pitch</span>
+                </div>
+                <div class="story-item">
+                    <div class="story-icon" style="background: linear-gradient(45deg, #667eea 0%, #764ba2 100%);">
+                        <i class="fas fa-microchip"></i>
+                    </div>
+                    <span>Tech</span>
+                </div>
+                <div class="story-item">
+                    <div class="story-icon" style="background: linear-gradient(45deg, #f093fb 0%, #f5576c 100%);">
+                        <i class="fas fa-heartbeat"></i>
+                    </div>
+                    <span>Health</span>
+                </div>
+                <div class="story-item">
+                    <div class="story-icon" style="background: linear-gradient(45deg, #4facfe 0%, #00f2fe 100%);">
+                        <i class="fas fa-leaf"></i>
+                    </div>
+                    <span>Green</span>
+                </div>
+                <div class="story-item">
+                    <div class="story-icon" style="background: linear-gradient(45deg, #fa709a 0%, #fee140 100%);">
+                        <i class="fas fa-shopping-cart"></i>
+                    </div>
+                    <span>E-comm</span>
+                </div>
+            </div>
+
+            <!-- Startup Cards Feed -->
+            <div class="startup-feed" id="startupFeed">
+                <!-- Startup cards will be dynamically loaded here -->
+            </div>
+        </div>
+
+        <!-- Create Pitch View -->
+        <div class="create-pitch-container" id="createPitchView">
+            <div class="create-pitch-header">
+                <button class="back-btn" onclick="showFeed()">
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+                <h2>Create Your Pitch</h2>
+                <button class="save-draft-btn">Save Draft</button>
+            </div>
+            <form class="pitch-form" id="pitchForm">
+                <div class="form-section">
+                    <label>Startup Name</label>
+                    <input type="text" name="startupName" required placeholder="Enter your startup name">
+                </div>
+                <div class="form-section">
+                    <label>Tagline</label>
+                    <input type="text" name="tagline" required placeholder="One line description">
+                </div>
+                <div class="form-section">
+                    <label>Sector</label>
+                    <select name="sector" required>
+                        <option value="">Select sector</option>
+                        <option value="tech">Technology</option>
+                        <option value="health">Healthcare</option>
+                        <option value="fintech">Fintech</option>
+                        <option value="ecommerce">E-commerce</option>
+                        <option value="education">Education</option>
+                        <option value="green">Green Energy</option>
+                    </select>
+                </div>
+                <div class="form-section">
+                    <label>Pitch Video</label>
+                    <div class="video-upload">
+                        <i class="fas fa-video"></i>
+                        <p>Upload your pitch video (max 2 min)</p>
+                        <input type="file" accept="video/*" name="pitchVideo">
+                    </div>
+                </div>
+                <div class="form-section">
+                    <label>Description</label>
+                    <textarea name="description" rows="4" required placeholder="Describe your startup..."></textarea>
+                </div>
+                <div class="form-section">
+                    <label>Funding Goal</label>
+                    <input type="number" name="fundingGoal" required placeholder="Target amount in USD">
+                </div>
+                <div class="form-section">
+                    <label>Minimum Investment</label>
+                    <input type="number" name="minInvestment" value="100" min="100" required>
+                </div>
+                <button type="submit" class="submit-pitch-btn">Submit Pitch</button>
+            </form>
+        </div>
+
+        <!-- Investment Modal -->
+        <div class="modal" id="investmentModal">
+            <div class="modal-content investment-modal">
+                <div class="modal-header">
+                    <h3>Invest in <span id="investStartupName"></span></h3>
+                    <button class="close-btn" onclick="closeInvestmentModal()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="investment-stats">
+                        <div class="stat">
+                            <span class="stat-label">Min Investment</span>
+                            <span class="stat-value">$100</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-label">Total Raised</span>
+                            <span class="stat-value" id="totalRaised">$25,000</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-label">Investors</span>
+                            <span class="stat-value" id="investorCount">125</span>
+                        </div>
+                    </div>
+                    <form class="investment-form" id="investmentForm">
+                        <div class="form-section">
+                            <label>Investment Amount (USD)</label>
+                            <input type="number" name="amount" min="100" value="100" required>
+                        </div>
+                        <div class="form-section">
+                            <label>Payment Method</label>
+                            <div class="payment-methods">
+                                <label class="payment-option">
+                                    <input type="radio" name="paymentMethod" value="stripe" checked>
+                                    <div class="payment-card">
+                                        <i class="fab fa-cc-stripe"></i>
+                                        <span>Card (Stripe)</span>
+                                    </div>
+                                </label>
+                                <label class="payment-option">
+                                    <input type="radio" name="paymentMethod" value="upi">
+                                    <div class="payment-card">
+                                        <i class="fas fa-mobile-alt"></i>
+                                        <span>UPI (India)</span>
+                                    </div>
+                                </label>
+                                <label class="payment-option">
+                                    <input type="radio" name="paymentMethod" value="plaid">
+                                    <div class="payment-card">
+                                        <i class="fas fa-university"></i>
+                                        <span>Bank (Plaid)</span>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                        <button type="submit" class="invest-btn">
+                            <i class="fas fa-lock"></i>
+                            Proceed to Payment
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Portfolio View -->
+        <div class="portfolio-container" id="portfolioView">
+            <div class="portfolio-header">
+                <h2>My Portfolio</h2>
+                <div class="portfolio-summary">
+                    <div class="summary-card">
+                        <span class="summary-label">Total Invested</span>
+                        <span class="summary-value">$5,200</span>
+                    </div>
+                    <div class="summary-card">
+                        <span class="summary-label">Active Investments</span>
+                        <span class="summary-value">12</span>
+                    </div>
+                    <div class="summary-card">
+                        <span class="summary-label">Avg. Return</span>
+                        <span class="summary-value positive">+15.3%</span>
+                    </div>
+                </div>
+            </div>
+            <div class="portfolio-list" id="portfolioList">
+                <!-- Portfolio items will be loaded here -->
+            </div>
+        </div>
+
+        <!-- Community View -->
+        <div class="community-container" id="communityView">
+            <div class="community-header">
+                <h2>Communities</h2>
+                <button class="create-community-btn">
+                    <i class="fas fa-plus"></i>
+                    Create
+                </button>
+            </div>
+            <div class="community-categories">
+                <button class="category-chip active">All</button>
+                <button class="category-chip">Tech</button>
+                <button class="category-chip">Health</button>
+                <button class="category-chip">Finance</button>
+                <button class="category-chip">Green</button>
+            </div>
+            <div class="community-list" id="communityList">
+                <!-- Community cards will be loaded here -->
+            </div>
+        </div>
+    </main>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <button class="nav-item active" onclick="showView('feed')">
+            <i class="fas fa-home"></i>
+            <span>Feed</span>
+        </button>
+        <button class="nav-item" onclick="showView('explore')">
+            <i class="fas fa-search"></i>
+            <span>Explore</span>
+        </button>
+        <button class="nav-item create-btn" onclick="showCreatePitch()">
+            <i class="fas fa-plus"></i>
+        </button>
+        <button class="nav-item" onclick="showView('portfolio')">
+            <i class="fas fa-chart-line"></i>
+            <span>Portfolio</span>
+        </button>
+        <button class="nav-item" onclick="showView('community')">
+            <i class="fas fa-users"></i>
+            <span>Community</span>
+        </button>
+    </nav>
+
+    <script src="script.js"></script>
+</body>
+</html>
